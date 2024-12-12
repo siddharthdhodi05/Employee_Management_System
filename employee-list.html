@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee List</title>
+  <!-- Add versioning to the Tailwind CSS link for cache busting -->
+  <script src="https://cdn.tailwindcss.com?ver=1.0"></script>
+</head>
+
+
+<body class="bg-gray-100 text-gray-800 flex flex-col min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-gray-800 text-white p-4 flex justify-between items-center">
+    <div class="text-lg font-semibold">Company Logo</div>
+    <input type="text" id="search" placeholder="Search Employees" class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    <nav class="space-x-4">
+      <a href="index.html" class="text-white hover:text-blue-500">Employee Registration</a>
+      <a href="employee-list.html" class="text-white hover:text-blue-500">Employee List</a>
+    </nav>
+  </header>
+
+  <!-- Employee Table -->
+  <div class="max-w-screen-xl mx-auto p-6 mt-6 flex-grow">
+    <table class="w-full table-auto border-collapse border border-gray-300">
+      <thead>
+        <tr>
+          <th class="px-4 py-2 border border-gray-300">Name</th>
+          <th class="px-4 py-2 border border-gray-300">Position</th>
+          <th class="px-4 py-2 border border-gray-300">About</th>
+          <th class="px-4 py-2 border border-gray-300">Joining Date</th>
+          <th class="px-4 py-2 border border-gray-300">Action</th>
+        </tr>
+      </thead>
+      <tbody id="employeeTable">
+        <!-- Employees will be populated here dynamically -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center p-4 mt-12 text-gray-500">
+    <p>&copy; 2024 Siddharth Dhodi</p>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const searchInput = document.getElementById("search");
+
+      // Function to load and display employee data
+      function loadEmployees(employees) {
+        const tableBody = document.querySelector("#employeeTable");
+        tableBody.innerHTML = "";
+
+        employees.forEach((employee, index) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td class="px-4 py-2 border border-gray-300">${employee.name}</td>
+            <td class="px-4 py-2 border border-gray-300">${employee.position}</td>
+            <td class="px-4 py-2 border border-gray-300">${employee.about}</td>
+            <td class="px-4 py-2 border border-gray-300">${employee.joiningDate}</td>
+            <td class="px-4 py-2 border border-gray-300">
+              <button class="text-red-500 hover:text-red-700 delete-btn" data-index="${index}">Delete</button>
+            </td>
+          `;
+          tableBody.appendChild(row);
+        });
+
+        const deleteButtons = document.querySelectorAll(".delete-btn");
+        deleteButtons.forEach(button => {
+          button.addEventListener("click", function () {
+            const index = button.getAttribute("data-index");
+            deleteEmployee(index);
+          });
+        });
+      }
+
+      // Function to delete an employee
+      function deleteEmployee(index) {
+        const employees = JSON.parse(localStorage.getItem("employees")) || [];
+        employees.splice(index, 1);
+        localStorage.setItem("employees", JSON.stringify(employees));
+        loadEmployees(employees);
+      }
+
+      // Function to search employees
+      function searchEmployees(query) {
+        const employees = JSON.parse(localStorage.getItem("employees")) || [];
+        const filteredEmployees = employees.filter(employee => employee.name.toLowerCase().includes(query.toLowerCase()));
+        loadEmployees(filteredEmployees);
+      }
+
+      // Initial load of employees
+      loadEmployees(JSON.parse(localStorage.getItem("employees")) || []);
+
+      // Search functionality
+      searchInput.addEventListener("input", function () {
+        const query = searchInput.value;
+        searchEmployees(query);
+      });
+    });
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Styles */
+body {
+  font-family: 'Arial', sans-serif;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header input[type="text"] {
+  width: 200px;
+  padding: 8px;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+footer {
+  background-color: #222;
+  color: #fff;
+  text-align: center;
+}
