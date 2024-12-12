@@ -83,15 +83,6 @@ EmployeeManagement/
 
 ---
 
-## Screenshots
-
-1. **Employee Registration Page**
-   *(Add image of the registration page here)*
-
-2. **Employee List Page**
-   *(Add image of the employee list page here)*
-
----
 
 ## Technologies Used
 
